@@ -17,7 +17,7 @@ def build():
 
 def create_facial_rig():
     env = environment.Environment()
-    facial_definition = env.get_variables_from_path(environment.pipe_config.default_facial_definition)
+    facial_definition = env.get_variables_from_path(environment.pipe_config.facial_definition)
 
     facial_controls = rigBlendShapeControls.RigBlendShapeControls(root='C_facialControls_reference_pnt')
 
