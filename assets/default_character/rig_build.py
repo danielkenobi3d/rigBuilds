@@ -3,6 +3,7 @@ from builder.pipeline.mgear import io
 from RMPY.core import data_save_load
 from RMPY.core import search_hierarchy
 from RMPY.core import controls
+from RMPY.rig import rigHierarchy
 import pymel.core as pm
 from pathlib import Path
 from rigBuilds.assets.default_character import rig_facial
@@ -63,6 +64,14 @@ def cleanup():
         if str(each) not in ['persp', 'top', 'front', 'side', 'rig']:
             if str(each) in ['environment', 'geo']:
                 each.setParent('rig')
+                rig_hierarchy = rigHierarchy.RigHierarchy()
+                settings_ctr = pm.ls('C_settings00_world_ctr')[0]
+                pm.addAttr('C_settings00_world_ctr', ln='geometry_display', at='enum', k=True,
+                           enumName=['Normal', 'Template', 'Reference'])
+                rig_hierarchy.geometry.overrideEnabled.set(1)
+                pm.connectAttr('C_settings00_world_ctr.geometry_display', rig_hierarchy.geometry.overrideDisplayType)
+                settings_ctr.geometry_display.set(2)
+
             else:
                 pm.delete(each)
     for each in pm.ls('*_settings*_pnt'):
