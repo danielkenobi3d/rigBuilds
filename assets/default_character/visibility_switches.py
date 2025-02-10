@@ -12,7 +12,7 @@ def build():
         for each_switch in geometry_definition.visibility:
             if type(geometry_definition.visibility[each_switch]) is list:
                 bool_switch = rigBoolSwitch.RigBoolSwitch(control=visibility_control,
-                                            attribute_name='secondaryControls')
+                                            attribute_name=each_switch)
                 for each_geo in geometry_definition.visibility[each_switch]:
                     pm.connectAttr(bool_switch.attribute_output, f'{each_geo}.{visibility_attribute}')
 
