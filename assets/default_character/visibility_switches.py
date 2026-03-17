@@ -14,11 +14,15 @@ def build():
                 bool_switch = rigBoolSwitch.RigBoolSwitch(control=visibility_control,
                                             attribute_name=each_switch)
                 for each_geo in geometry_definition.visibility[each_switch]:
-                    pm.connectAttr(bool_switch.attribute_output, f'{each_geo}.{visibility_attribute}')
+                    try:
+                        pm.connectAttr(bool_switch.attribute_output, f'{each_geo}.{visibility_attribute}')
+                    except:
+                        print('Error on Switch')
+                        print(bool_switch.attribute_output, f'{each_geo}.{visibility_attribute}')
 
             elif type(geometry_definition.visibility[each_switch]) is dict:
                 enum_switch = rigEnumSwitch.RigEnumSwitch(control=visibility_control)
-                enum_switch.add_enum_names(geometry_definition.visibility[each_switch].keys(), attribute_name=each_switch)
+                enum_switch.add_enum_names(*[str(each) for each in geometry_definition.visibility[each_switch].keys()], attribute_name=each_switch)
                 for each_key in geometry_definition.visibility[each_switch]:
                     for each_geo in geometry_definition.visibility[each_switch][each_key]:
                         pm.connectAttr(enum_switch.switch[each_key].attribute_output, f'{each_geo}.{visibility_attribute}')
